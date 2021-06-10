@@ -1,5 +1,5 @@
+import 'package:clima/services/Location.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -9,21 +9,31 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  final String apiKey = "ndyZ8IV21f22nME2RMU3mQow6B3w0KZy";
+  late final lat;
+  late final long;
+  String api =
+      "http://api.accuweather.com/locations/v1/cities/geoposition/search.json?q=40.78, -77.89&apikey={your key}";
+
   void fetchLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    print("Position: $position");
+    Location location = Location();
+    await location.getCurrentLocation();
+    print(location.latitude);
+    print(location.longitude);
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fetchLocation();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: Text("clima app"),
+      ),
+    );
   }
 }

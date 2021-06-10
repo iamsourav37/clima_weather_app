@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'screens/LoadingScreen.dart';
 
 void main() {
