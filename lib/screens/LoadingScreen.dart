@@ -1,9 +1,10 @@
-import 'dart:convert';
-
+import 'package:clima/utils/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:clima/services/Location.dart';
 import 'package:clima/services/Networking.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'package:clima/screens/LocationScreen.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -24,11 +25,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
     this.lat = location.latitude;
     this.long = location.longitude;
     this.apiUrl =
-        "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$apiKey";
-    print("our api url : $apiUrl");
+        "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$apiKey&units=metric";
     NetworkHelper networkHelper = NetworkHelper(url: apiUrl);
     var weatherData = await networkHelper.getData();
-    print(weatherData);
+
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => LocationScreen(
+          locationData: weatherData,
+        ),
+      ),
+    );
   }
 
   @override
@@ -40,10 +47,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text("get data"),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/bgImage.jpeg"),
+            fit: BoxFit.cover,
+            colorFilter:
+                ColorFilter.mode(Colors.white.withOpacity(1), BlendMode.darken),
+          ),
+        ),
+        constraints: BoxConstraints.expand(),
+        child: SpinKitSquareCircle(
+          color: Colors.greenAccent,
+          size: 100,
         ),
       ),
     );
